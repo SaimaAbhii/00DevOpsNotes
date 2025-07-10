@@ -1,0 +1,40 @@
+###########################################################
+Vagrant Commands
+###########################################################
+
+# Initialize a Vagrant project (creates Vagrantfile)
+vagrant init
+
+# Start and provision the VM
+vagrant up
+
+# Check the status of the current VM
+vagrant status
+
+# Check the status of all Vagrant VMs on the system
+vagrant global-status
+
+# SSH into the running VM
+vagrant ssh
+
+# Suspend the VM (pause state, saves memory)
+vagrant suspend
+
+# Resume a suspended VM
+vagrant resume
+
+# Shut down the VM
+vagrant halt
+
+# Reload the VM (restarts + reloads Vagrantfile changes)
+vagrant reload
+
+# Destroy the VM (removes the virtual machine)
+vagrant destroy
+
+# Destroy a specific VM by its ID (without entering its folder)
+# Should be run from the folder where Vagrantfile is present
+vagrant destroy vmID
+
+# Clean up invalid entries from global-status list
+vagrant global-status --prune

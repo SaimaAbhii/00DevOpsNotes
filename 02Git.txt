@@ -1,0 +1,93 @@
+#########################################
+# Git Setup
+#########################################
+
+# Set global user credentials (required for commits)
+git config --global user.name "Your Name"
+git config --global user.email "example@gmail.com"
+
+#########################################
+# Branching
+#########################################
+
+# Create a new branch
+git branch new-branch-name
+
+# List all branches (local and remote)
+git branch -a
+
+# Switch to another branch
+git checkout branch-name
+# OR (Recommended)
+git switch branch-name
+
+# Example:
+git switch sprint1
+
+# Merge a branch into the main branch
+git switch main        # Switch to main
+git merge sprint1      # Merge sprint1 into main
+
+#########################################
+# Checking Differences
+#########################################
+
+# View unstaged changes
+git diff
+
+# View staged changes
+git diff --cached
+
+# View commit history (short format)
+git log --oneline
+
+# Compare two commits
+git diff <commit1> <commit2>
+
+# Example:
+git diff 5625e2e 7878b8a   # Shows deletions (Old → New)
+git diff 7878b8a 5625e2e   # Shows additions (New → Old)
+
+git diff commit1 commit2 (shows changes from commit1 to commit2)
+If something was deleted in commit2, it will be shown
+
+So, git diff 5625e2e 7878b8a shows what was removed
+    git diff 7878b8a 5625e2e shows what was added (in reverse)
+
+Think of it as: first → second = what changed going forward
+
+#########################################
+# Rollback & Undo
+#########################################
+
+# Unstage a file (move from staged to back to working directory)
+git restore --staged filename
+
+# Unstage multiple files
+git restore --staged file1 file2
+
+Example:
+    git restore --staged file5 file7
+    (both file5 and file7 will be removed from staging area)
+
+# Revert last commit (keeps history by creating a new commit,to go back to previous commit)
+git revert HEAD
+
+# Reset to a previous commit (erases history after that point,To go back to a previous commit without keeping history)
+git reset --hard commitID
+
+################
+Git Tags
+################
+
+Semantic versioning
+	format : 3 . 1. 4 => major. minor. patch
+		
+		patch - bug fixes
+			 simple slight improvements from the previous version
+		
+		minor - new features added
+			 some improvemnts are done
+		
+		major - major changes
+			 backward incompatible
