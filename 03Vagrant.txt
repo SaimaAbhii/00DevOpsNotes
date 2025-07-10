@@ -1,40 +1,268 @@
-###########################################################
-Vagrant Commands
-###########################################################
+#########################################
+# Vagrant Commands
+#########################################
 
 # Initialize a Vagrant project (creates Vagrantfile)
+# Run from any folder where you want to create Vagrantfile
 vagrant init
 
 # Start and provision the VM
+# Run from the folder containing the Vagrantfile (VM folder)
 vagrant up
 
-# Check the status of the current VM
+# Check status of the current VM
+# Run from the VM folder
 vagrant status
 
-# Check the status of all Vagrant VMs on the system
+# Check status of all Vagrant VMs on the system
+# Can run from any folder
 vagrant global-status
 
 # SSH into the running VM
+# Run from the VM folder
 vagrant ssh
 
-# Suspend the VM (pause state, saves memory)
+# Suspend the VM (pause, saves memory)
+# Run from the VM folder
 vagrant suspend
 
 # Resume a suspended VM
+# Run from the VM folder
 vagrant resume
 
 # Shut down the VM
+# Run from the VM folder
 vagrant halt
 
-# Reload the VM (restarts + reloads Vagrantfile changes)
+# Reload the VM (restart + reload Vagrantfile changes)
+# Run from the VM folder
 vagrant reload
 
-# Destroy the VM (removes the virtual machine)
+# Destroy the VM (remove the VM)
+# Run from the VM folder
 vagrant destroy
 
-# Destroy a specific VM by its ID (without entering its folder)
-# Should be run from the folder where Vagrantfile is present
-vagrant destroy vmID
+# Force destroy (run from VM folder)
+vagrant destroy --force
+
+# Destroy a specific VM by its ID (run from Vagrantfile folder)
+# Run from the VM folder where Vagrantfile is present
+vagrant destroy <vmID>
 
 # Clean up invalid entries from global-status list
+# Can run from any folder
 vagrant global-status --prune
+
+
+#########################################
+# Vagrant Network Modes
+#########################################
+
+# 1. Private Network (host-only)
+	
+	config.vm.network "private_network", ip: "192.168.33.10"
+	
+# - Creates a host-only network between host and VM
+# - VM gets a static IP assigned by you
+# - Router is not involved
+# - Only host machine can access the VM
+# - Use for local development and testing apps from host browser
+# - Default and safest choice for most dev setups
+
+
+# 2. Public Network (bridged)
+	
+	config.vm.network "public_network"
+	
+# - Creates a bridged network connecting VM to your physical LAN
+# - VM acts like a separate device on the network
+# - VM gets IP from your router (DHCP or static)
+# - Other devices on the LAN can access the VM
+# - Use for hosting services visible to other LAN devices or simulating production environment
+
+#########################################
+# VM Network Interfaces & IPs Explained
+#########################################
+
+# 1. NAT Network (default VirtualBox network)
+# - Example IP: 10.0.2.15
+# - Provides internet access to VM via host NAT
+# - VM can access internet but is NOT reachable from host or LAN using this IP
+# - Useful for outbound connectivity without exposing VM on LAN
+
+# 2. Private Network (host-only network)
+# - Example IP: 192.168.56.10 (default VirtualBox host-only network is usually 192.168.56.0/24)
+# - Creates isolated network between VM and host machine only
+# - VM is accessible only from the host
+# - No access from other devices on LAN or internet
+# - Often used for local development or testing where VM and host communicate
+# - Router/DHCP server is not involved; IP is static or assigned by host-only DHCP
+
+# 3. Public Network (bridged network)
+# - Example IP: 172.22.248.17 (same subnet as host IP/My system IP 172.22.248.41)
+# - VM connected directly to the physical LAN as a separate device
+# - VM gets IP from LAN DHCP or can be assigned static IP on LAN subnet
+# - Other devices on the LAN can communicate with VM as if it were a physical machine
+# - Use when you want VM to be reachable on LAN or simulate production environment
+
+#########################################
+# Identifying Desktop and VM IP Addresses
+#########################################
+
+# Desktop's LAN IP (Physical Machine)
+# - Check the network interface connected to your LAN (e.g., enp2s0)
+# - Example from ifconfig: inet 172.22.248.41 netmask 255.255.0.0
+# - This IP is your private IP on your local network
+# - Not your public internet IP (which is assigned by your ISP)
+
+# VM Bridged Adapter IP
+# - Should be in the same subnet as desktop’s LAN IP if bridged correctly
+# - Example: inet 172.22.248.17 (matches desktop subnet 172.22.x.x)
+# - Confirms VM is connected via bridged network and visible on LAN
+
+# VM Private (Host-only) Adapter IP
+# - Example: inet 192.168.56.10 (default VirtualBox host-only subnet)
+# - Isolated network between VM and host only
+# - Useful for communication only between VM and host, not visible on LAN or internet
+
+# VM NAT Adapter IP
+# - Example: inet 10.0.2.15
+# - Used to provide VM internet access via NAT through host machine
+# - VM can reach internet but is not reachable from host or LAN using this IP
+
+#########################################
+# How to Check Your Public IP (Internet-facing IP/provided by the ISP)
+#########################################
+
+# Run from desktop or VM terminal:
+
+curl ifconfig.me
+
+# or
+
+curl ipinfo.io/ip
+
+# This command returns the public IP address assigned by your ISP
+# This is different from your private LAN IP
+
+#########################################
+# Summary of When to Use Each Network Mode
+#########################################
+
+# Private Network (host-only)
+# - Use for local dev, VM-host communication
+# - Safe, isolated, no LAN exposure
+
+# Public Network (bridged)
+# - Use when VM should be visible on LAN and reachable by other devices
+# - Good for testing networked services or simulating real deployment
+
+# NAT Network (default)
+# - Provides internet access from VM without exposing VM on LAN
+# - Often used as a default for simple setups
+
+#########################################
+# Example Vagrant Network Config Snippets
+#########################################
+
+# Private Network with static IP
+config.vm.network "private_network", ip: "192.168.33.10"
+
+# Public Network (bridged)
+config.vm.network "public_network"
+
+# In a VM using above config:
+# - VM gets a private IP like 192.168.56.x (host-only)
+# - VM gets a bridged IP on same LAN subnet as desktop (172.22.x.x)
+
+#########################################
+# Additional Notes
+#########################################
+
+# - Bridged network interface IP must be on same subnet as host’s LAN IP for proper LAN visibility
+# - Host-only network isolates VM from LAN but allows host <-> VM communication
+# - NAT network is default and useful for internet access without LAN exposure
+# - Check VM network interfaces with `ifconfig` or `ip addr`
+# - Check host IP with `ifconfig` or `ip addr`
+# - Use `curl ifconfig.me` to find your public internet IP
+
+#########################################
+
+# System Information Commands (Linux)
+#########################################
+
+after ssh into vagrant VMs after creation
+
+# View IP address of the system
+ifconfig
+# OR (modern alternative)
+ip addr show
+
+# View RAM and memory usage (in MB)
+free -m
+
+# View detailed CPU information (including cores)
+cat /proc/cpuinfo
+
+########################
+Synced Folders in Vagrant
+########################
+	Syntax:
+	config.vm.synced_folder "host_path", "guest_path", [options]
+
+Parameters:
+	host_path : Path on your host machine
+	guest_path: Path inside the VM
+
+Example:
+	config.vm.synced_folder "./data", "/home/vagrant/data"	
+	
+	Syncs the ./data folder on the host to /home/vagrant/data in the VM
+	
+#######################################
+# Vagrant Provisioning
+#######################################
+
+# 1. Provisioning with Shell Script
+# Add this block inside your Vagrantfile (within the config block)
+
+		config.vm.provision "shell", inline: <<-SHELL
+  		# Update packages (using dnf for RHEL/CentOS/Fedora-based systems)
+  		sudo dnf update -y
+  
+  		# Create a directory for storing system info
+  		mkdir -p /opt/devopsdir
+  
+  		# Capture memory info
+  		free -m > /opt/devopsdir/memory.txt
+  
+ 		 # Capture disk usage info
+  		df -h > /opt/devopsdir/disk.txt
+		SHELL
+
+# (Ensure 'end' follows after config block in your Vagrantfile)
+
+#######################################
+# Commands to Run Provisioning
+#######################################
+
+# Run provisioning on an already running VM
+vagrant provision
+
+# Start VM and run provisioning on boot
+vagrant up --provision
+
+# Restart VM and re-run provisioning
+vagrant reload --provision
+
+#######################################
+# What This Provisioning Does
+#######################################
+
+# - Updates system packages using dnf
+# - Creates folder: /opt/devopsdir
+# - Writes memory info to: /opt/devopsdir/memory.txt
+# - Writes disk usage info to: /opt/devopsdir/disk.txt
+
+#######################################
+
