@@ -1,0 +1,61 @@
+DevOps - Introduction
+
+Why DevOps Emerged in the Software Field:
+-----------------------------------------
+Modern software must be:
+- High quality
+- Delivered on time
+- Aligned with user requirements
+- Cost-effective
+
+These goals are traditionally achieved using the Software Development Life Cycle (SDLC).
+
+SDLC - Software Development Life Cycle:
+---------------------------------------
+SDLC is a structured process with defined stages, traditionally handled by two separate teams:
+
+Developer Team Responsibilities:
+- Requirements Gathering
+- Planning
+- Designing
+- Development (coding)
+
+Operations Team Responsibilities:
+- Build (compile, package)
+- Testing (manual or automated)
+- Deployment (release to production)
+- Maintenance (updates, monitoring, bug fixes)
+
+Challenges with Traditional SDLC Models:
+----------------------------------------
+1. Waterfall Model:
+   - Linear and sequential approach.
+   - Each phase must be completed before the next begins.
+   - Low client interaction.
+   - Difficult to implement changes once a phase is completed.
+   - Poor collaboration between Development and Operations teams.
+   - Low transparency and adaptability.
+
+2. Agile Methodology:
+   - More iterative and incremental.
+   - Encourages regular client feedback at each stage.
+   - Faster development cycles.
+   - Better adaptability to change.
+   - Still lacks full integration between Dev and Ops teams.
+
+DevOps - A Modern Approach:
+---------------------------
+DevOps (Development + Operations) addresses limitations of previous models by:
+- Bridging the gap between Development and Operations teams.
+- Promoting a culture of collaboration and shared responsibility.
+- Using automation tools and practices across all stages.
+- Enabling Continuous Integration and Continuous Delivery (CI/CD).
+- Improving speed, reliability, and quality of software delivery.
+
+Key Benefits of DevOps:
+- Faster time to market
+- Improved deployment frequency
+- Better product quality
+- Enhanced customer satisfaction
+- Reduced failures and quicker recovery
+
